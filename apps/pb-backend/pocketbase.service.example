@@ -1,0 +1,17 @@
+[Unit]
+Description = pocketbase
+
+[Service]
+Type             = simple
+User             = root
+Group            = root
+LimitNOFILE      = 4096
+Restart          = always
+RestartSec       = 5s
+StandardOutput   = append:/apps/knotebooklm/apps/pb-backend/std.log
+StandardError    = append:/apps/knotebooklm/apps/pb-backend/std.log
+WorkingDirectory = /apps/knotebooklm/apps/pb-backend
+ExecStart        = /apps/knotebooklm/apps/pb-backed/pocketbase serve
+
+[Install]
+WantedBy = multi-user.target
