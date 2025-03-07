@@ -6,7 +6,6 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	let data: SuperValidated<Infer<LoginFormSchema>> = $props();
-	$inspect(data);
 
 	const form = superForm(data, { validators: zodClient(loginFormSchema) });
 	const { form: formData, enhance } = form;
