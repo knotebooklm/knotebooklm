@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
+	import AddSource from '$lib/components/AddSource/AddSource.svelte';
 	import * as Card from '$lib/components/ui/card';
 </script>
 
@@ -8,9 +8,7 @@
 		<Card.Header>
 			<Card.Title>Sources</Card.Title>
 		</Card.Header>
-		<Card.Content class="flex justify-center"
-			><Button variant="outline" class="w-3/4 rounded-xl">+ Source</Button>
-		</Card.Content>
+		<Card.Content class="flex justify-center"><AddSource /></Card.Content>
 		<Card.Footer class="flex justify-between"></Card.Footer>
 	</Card.Root>
 </section>
