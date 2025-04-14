@@ -10,7 +10,7 @@
 	<!-- Main Content -->
 	<div class="flex flex-1">
 		<!-- Sources -->
-		<SourcesArea form={data.form} />
+		<SourcesArea />
 
 		<!-- Chat -->
 		<ChatArea />

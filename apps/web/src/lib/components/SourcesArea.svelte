@@ -7,8 +7,6 @@
 
 	const documents = $state<{ id: string; title: string; summary: string; text: string }[]>([]);
 
-	let { form } = $props();
-
 	notebookStore.subscribe((notebook) => {
 		if (notebook) {
 			documents.push(...notebook.documents);
@@ -22,7 +20,7 @@
 			<Card.Title>Sources</Card.Title>
 		</Card.Header>
 		<Card.Content class="flex flex-col justify-center"
-			><div class="pb-5"><AddSource {form} /></div>
+			><div class="pb-5"><AddSource /></div>
 			<Table.Root>
 				<Table.Body>
 					{#each documents as document}

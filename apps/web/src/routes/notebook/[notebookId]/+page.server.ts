@@ -1,5 +1,3 @@
-import { superValidate } from 'sveltekit-superforms/server';
-import { addTextSchemaAdapter } from '@/schemas/addTextSchema.js';
 import type { Documents, Notebook } from '$lib/types/database';
 
 export async function load({ locals, params }) {
@@ -10,9 +8,7 @@ export async function load({ locals, params }) {
 		.collection('documents')
 		.getFullList({ filter: locals.pb.filter('notebook = {:notebook}', { notebook: notebook.id }) });
 
-	const form = await superValidate(addTextSchemaAdapter);
-
-	return { form, notebook: { id: params.notebookId, title: notebook.title, documents } };
+	return { notebook: { id: params.notebookId, title: notebook.title, documents } };
 }
 
 export const actions = {
