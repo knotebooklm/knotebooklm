@@ -37,5 +37,15 @@ export const actions = {
 		}
 		// TODO: add error handling
 		await locals.pb.collection('documents').update(id, { title });
+	},
+	'delete-document': async ({ request, locals }) => {
+		const form = await request.formData();
+		const id = form.get('id') as string;
+
+		if (!id) {
+			return;
+		}
+		// TODO: add error handling
+		await locals.pb.collection('documents').delete(id);
 	}
 };

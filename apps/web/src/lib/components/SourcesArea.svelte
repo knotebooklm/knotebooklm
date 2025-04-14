@@ -1,5 +1,6 @@
 <script lang="ts">
 	import AddSource from '$lib/components/AddSource/AddSource.svelte';
+	import DeleteDocumentModal from '$lib/components/DeleteDocumentModal.svelte';
 	import RenameDocumentModal from '$lib/components/RenameDocumentModal.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import * as Table from '$lib/components/ui/table';
@@ -23,15 +24,21 @@
 	});
 
 	let isRenameDocumentModalOpen = $state(false);
+	let isDeleteDocumentModalOpen = $state(false);
+
 	let docId = $state('');
 
-	function toggle() {
+	function toggleRenameModal() {
 		isRenameDocumentModalOpen = !isRenameDocumentModalOpen;
+	}
+	function toggleDeleteModal() {
+		isDeleteDocumentModalOpen = !isDeleteDocumentModalOpen;
 	}
 </script>
 
 <section class="flex-1 p-2">
-	<RenameDocumentModal isOpen={isRenameDocumentModalOpen} {toggle} {docId} />
+	<RenameDocumentModal isOpen={isRenameDocumentModalOpen} toggle={toggleRenameModal} {docId} />
+	<DeleteDocumentModal isOpen={isDeleteDocumentModalOpen} toggle={toggleDeleteModal} {docId} />
 	<Card.Root class="h-full">
 		<Card.Header>
 			<Card.Title>Sources</Card.Title>
@@ -56,11 +63,19 @@
 									size={'1rem'}
 									onclick={() => {
 										docId = document.id;
-										toggle();
+										toggleRenameModal();
 									}}
 								/></Table.Cell
 							>
-							<Table.Cell class="p-0"><TrashIcon size={'1rem'} /></Table.Cell>
+							<Table.Cell class="p-0"
+								><TrashIcon
+									size={'1rem'}
+									onclick={() => {
+										docId = document.id;
+										toggleDeleteModal();
+									}}
+								/></Table.Cell
+							>
 						</Table.Row>
 					{/each}
 				</Table.Body>
