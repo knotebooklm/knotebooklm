@@ -1,0 +1,34 @@
+import { superValidate } from 'sveltekit-superforms/server';
+import { addTextSchemaAdapter } from '@/schemas/addTextSchema.js';
+import type { Documents, Notebook } from '$lib/types/database';
+
+export async function load({ locals, params }) {
+	const notebook: Omit<Notebook, 'documents'> = await locals.pb
+		.collection('notebooks')
+		.getOne(params.notebookId);
+	const documents: Documents = await locals.pb
+		.collection('documents')
+		.getFullList({ filter: locals.pb.filter('notebook = {:notebook}', { notebook: notebook.id }) });
+
+	const form = await superValidate(addTextSchemaAdapter);
+
+	return { form, notebook: { id: params.notebookId, title: notebook.title, documents } };
+}
+
+export const actions = {
+	text: async ({ request, locals, params }) => {
+		const data = await request.formData();
+		const text = data.get('text');
+
+		if (text && locals.user) {
+			await locals.pb.collection('documents').create({
+				user: locals.user.id,
+				notebook: params.notebookId,
+				document: new File([text], `doc_${locals.user.id}.txt`),
+				text,
+				summary: text.slice(0, 100),
+				title: 'Pasted Text'
+			});
+		}
+	}
+};
