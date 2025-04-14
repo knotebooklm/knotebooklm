@@ -26,5 +26,16 @@ export const actions = {
 				title: 'Pasted Text'
 			});
 		}
+	},
+	'change-name': async ({ request, locals }) => {
+		const form = await request.formData();
+		const id = form.get('id') as string;
+		const title = form.get('title');
+
+		if (!id || !title) {
+			return;
+		}
+		// TODO: add error handling
+		await locals.pb.collection('documents').update(id, { title });
 	}
 };
