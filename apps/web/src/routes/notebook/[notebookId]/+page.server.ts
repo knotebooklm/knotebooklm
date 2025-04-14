@@ -26,6 +26,8 @@ export const actions = {
 				title: 'Pasted Text'
 			});
 		}
+
+		// TODO: submit new document to RAG service for chunking, embedding
 	},
 	'change-name': async ({ request, locals }) => {
 		const form = await request.formData();
