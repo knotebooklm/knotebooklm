@@ -16,8 +16,10 @@ export const actions = {
 		const data = await request.formData();
 		const text = data.get('text');
 
+		let response;
+
 		if (text && locals.user) {
-			await locals.pb.collection('documents').create({
+			response = await locals.pb.collection('documents').create({
 				user: locals.user.id,
 				notebook: params.notebookId,
 				document: new File([text], `doc_${locals.user.id}.txt`),
@@ -25,9 +27,22 @@ export const actions = {
 				summary: text.slice(0, 100),
 				title: 'Pasted Text'
 			});
-		}
 
-		// TODO: submit new document to RAG service for chunking, embedding
+			if (response) {
+				await fetch('http://localhost:5000/new', {
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json'
+					},
+					body: JSON.stringify({
+						doc_id: response.id,
+						notebook_id: params.notebookId,
+						user_id: locals.user.id,
+						text
+					})
+				});
+			}
+		}
 	},
 	'change-name': async ({ request, locals }) => {
 		const form = await request.formData();
