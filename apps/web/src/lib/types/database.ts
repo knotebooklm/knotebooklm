@@ -13,5 +13,4 @@ export type Documents = Document[];
 export type Notebook = {
 	id: string;
 	title: string;
-	documents: Documents;
 };

@@ -7,24 +7,11 @@
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Pencil, TrashIcon } from 'lucide-svelte';
 
-	import { notebookStore } from '$lib/stores/notebook';
-
-	const documents = $state<{ id: string; title: string; summary: string; text: string }[]>([]);
-	const selectedDocuments = $derived(
-		documents.reduce((acc: Record<string, boolean>, document) => {
-			acc[document.id] = false;
-			return acc;
-		}, {})
-	);
-
-	notebookStore.subscribe((notebook) => {
-		if (notebook) {
-			documents.push(...notebook.documents);
-		}
-	});
+	import { getDocuments, selected } from '$lib/state/notebook.svelte';
 
 	let isRenameDocumentModalOpen = $state(false);
 	let isDeleteDocumentModalOpen = $state(false);
+	let isAddSourceModalOpen = $state(false);
 
 	let docId = $state('');
 
@@ -44,17 +31,27 @@
 			<Card.Title>Sources</Card.Title>
 		</Card.Header>
 		<Card.Content class="flex flex-col justify-center"
-			><div class="pb-5"><AddSource /></div>
+			><div class="pb-5">
+				<AddSource
+					isOpen={isAddSourceModalOpen}
+					toggle={() => (isAddSourceModalOpen = !isAddSourceModalOpen)}
+				/>
+			</div>
 			<Table.Root>
 				<Table.Body>
-					{#each documents as document}
+					{#each getDocuments() as document}
 						<Table.Row
 							><Table.Cell
 								><Checkbox
 									id={document.id}
 									value={document.id}
+									checked={selected.has(document.id)}
 									onCheckedChange={(v) => {
-										selectedDocuments[document.id] = v;
+										if (v) {
+											selected.add(document.id);
+										} else {
+											selected.delete(document.id);
+										}
 									}}
 								/></Table.Cell
 							><Table.Cell colspan={5}>{document.title}</Table.Cell>

@@ -1,3 +1,4 @@
+import pick from 'lodash/pick';
 import type { Documents, Notebook } from '$lib/types/database';
 
 export async function load({ locals, params }) {
@@ -8,7 +9,7 @@ export async function load({ locals, params }) {
 		.collection('documents')
 		.getFullList({ filter: locals.pb.filter('notebook = {:notebook}', { notebook: notebook.id }) });
 
-	return { notebook: { id: params.notebookId, title: notebook.title, documents } };
+	return { notebook: { id: params.notebookId, title: notebook.title }, documents };
 }
 
 export const actions = {
@@ -43,6 +44,15 @@ export const actions = {
 				});
 			}
 		}
+		return pick(response, [
+			'id',
+			'user',
+			'notebook',
+			'document',
+			'title',
+			'summary',
+			'text'
+		]) as Document;
 	},
 	'change-name': async ({ request, locals }) => {
 		const form = await request.formData();
@@ -54,6 +64,8 @@ export const actions = {
 		}
 		// TODO: add error handling
 		await locals.pb.collection('documents').update(id, { title });
+
+		return { title };
 	},
 	'delete-document': async ({ request, locals }) => {
 		const form = await request.formData();

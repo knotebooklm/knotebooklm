@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { notebookStore } from '$lib/stores/notebook';
+	import { setNotebook, addDocuments } from '$lib/state/notebook.svelte';
 	import { ArtifactsArea, ChatArea, SourcesArea } from '$lib/components';
 
 	let { data } = $props();
-	notebookStore.set(data.notebook);
+
+	setNotebook(data.notebook);
+	addDocuments(data.documents);
 </script>
 
 <div class="flex h-screen flex-col">
