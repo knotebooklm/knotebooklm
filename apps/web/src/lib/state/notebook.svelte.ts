@@ -14,6 +14,7 @@ export function getDocuments() {
 
 export function setNotebook(notebookData: Notebook) {
 	notebook = notebookData;
+	documents = [];
 	selected.clear();
 }
 
