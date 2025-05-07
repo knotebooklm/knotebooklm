@@ -13,7 +13,7 @@
 		{#if pathname.includes('notebook') && $notebookStore?.title}
 			<h1 class="pl-4 text-3xl" id="notebook-title">{$notebookStore.title}</h1>
 		{:else}
-			<h1 class="pl-4 text-3xl shadow-yellow-200 drop-shadow-2xl" id="app-title">knotebooklm</h1>
+			<h1 class="pl-4 text-3xl" id="app-title">knotebooklm</h1>
 		{/if}
 	</div>
 	{#if data.user}
@@ -27,6 +27,6 @@
 <style>
 	#app-title {
 		font-family: 'anybody', sans-serif;
-		text-shadow: 1px 1px 3px #ffd493;
+		/* text-shadow: 1px 1px 3px #ffd493; */
 	}
 </style>
