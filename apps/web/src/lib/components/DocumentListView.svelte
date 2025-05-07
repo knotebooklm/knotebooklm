@@ -57,6 +57,7 @@
 							><Table.Cell colspan={5}>{document.title}</Table.Cell>
 							<Table.Cell class="p-0"
 								><Pencil
+									class="cursor-pointer"
 									size={'1rem'}
 									onclick={() => {
 										docId = document.id;
