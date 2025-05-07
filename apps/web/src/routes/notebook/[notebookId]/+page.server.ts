@@ -1,4 +1,4 @@
-import pick from 'lodash/pick';
+import { pick } from 'es-toolkit';
 import type { Documents, Notebook } from '$lib/types/database';
 
 export async function load({ locals, params }) {
@@ -42,17 +42,12 @@ export const actions = {
 						text
 					})
 				});
+
+				return pick(response, ['id', 'user', 'notebook', 'document', 'title', 'summary', 'text']);
 			}
+
+			return {};
 		}
-		return pick(response, [
-			'id',
-			'user',
-			'notebook',
-			'document',
-			'title',
-			'summary',
-			'text'
-		]) as Document;
 	},
 	'change-name': async ({ request, locals }) => {
 		const form = await request.formData();
