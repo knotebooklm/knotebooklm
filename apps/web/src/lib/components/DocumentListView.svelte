@@ -2,6 +2,7 @@
 	import AddSource from '$lib/components/AddSource/AddSource.svelte';
 	import DeleteDocumentModal from '$lib/components/DeleteDocumentModal.svelte';
 	import RenameDocumentModal from '$lib/components/RenameDocumentModal.svelte';
+	import ShowDocumentModal from '$lib/components/ShowDocumentModal.svelte';
 	import * as Card from '$lib/components/ui/card';
 	import * as Table from '$lib/components/ui/table';
 	import { Checkbox } from '$lib/components/ui/checkbox';
@@ -12,6 +13,7 @@
 	let isRenameDocumentModalOpen = $state(false);
 	let isDeleteDocumentModalOpen = $state(false);
 	let isAddSourceModalOpen = $state(false);
+	let isDocumentModalOpen = $state(false);
 
 	let docId = $state('');
 
@@ -21,11 +23,15 @@
 	function toggleDeleteModal() {
 		isDeleteDocumentModalOpen = !isDeleteDocumentModalOpen;
 	}
+	function toggleDocumentModal() {
+		isDocumentModalOpen = !isDocumentModalOpen;
+	}
 </script>
 
 <section class="flex-1 p-2">
 	<RenameDocumentModal isOpen={isRenameDocumentModalOpen} toggle={toggleRenameModal} {docId} />
 	<DeleteDocumentModal isOpen={isDeleteDocumentModalOpen} toggle={toggleDeleteModal} {docId} />
+	<ShowDocumentModal isOpen={isDocumentModalOpen} toggle={toggleDocumentModal} {docId} />
 	<Card.Root class="h-full">
 		<Card.Header>
 			<Card.Title>Sources</Card.Title>
@@ -54,7 +60,13 @@
 										}
 									}}
 								/></Table.Cell
-							><Table.Cell colspan={5}>{document.title}</Table.Cell>
+							><Table.Cell
+								colspan={5}
+								onclick={() => {
+									docId = document.id;
+									toggleDocumentModal();
+								}}>{document.title}</Table.Cell
+							>
 							<Table.Cell class="p-0"
 								><Pencil
 									class="cursor-pointer"

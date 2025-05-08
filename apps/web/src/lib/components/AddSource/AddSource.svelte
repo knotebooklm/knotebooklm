@@ -5,7 +5,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { addDocuments } from '$lib/state/notebook.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { Document as NotebookDocument } from '$lib/types/database';
+	import type { DocumentRecord } from '$lib/types';
 
 	let blankFormData = { text: '' };
 
@@ -13,7 +13,7 @@
 
 	let { isOpen, toggle } = $props();
 
-	const handleSubmit: SubmitFunction<NotebookDocument> = () => {
+	const handleSubmit: SubmitFunction<DocumentRecord> = () => {
 		return async ({ result }) => {
 			if (result.type === 'success' && result.data) {
 				addDocuments(result.data);

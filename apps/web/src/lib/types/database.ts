@@ -1,16 +1,23 @@
-export type Document = {
-	id: string;
-	user: string;
-	notebook: string;
+export type DocumentRecord = {
+	collectionId: string;
+	collectionName: string;
+	created: string;
 	document: string;
-	title: string;
+	id: string;
+	notebook: string;
 	summary: string;
 	text: string;
+	title: string;
+	updated: string;
+	user: string;
 };
 
-export type Documents = Document[];
-
-export type Notebook = {
+export type NotebookRecord = {
+	collectionId: string;
+	collectionName: string;
+	created: string;
 	id: string;
 	title: string;
+	updated: string;
+	user: string;
 };
