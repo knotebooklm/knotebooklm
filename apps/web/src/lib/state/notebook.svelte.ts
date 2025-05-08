@@ -1,12 +1,12 @@
 import type { Document, DocumentRecord, Notebook } from '$lib/types';
-import { makeDocument } from '$lib/generators';
+import { makeDocument, makeNotebook } from '$lib/generators';
 
 let notebook = $state<Notebook>();
 let documents = $state<Document[]>([]);
 export const selected = $state<Set<string>>(new Set());
 
 export function getNotebook() {
-	return notebook;
+	return notebook || makeNotebook();
 }
 
 export function getDocuments() {

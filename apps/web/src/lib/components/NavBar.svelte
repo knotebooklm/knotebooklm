@@ -1,6 +1,6 @@
 <script>
 	import { page } from '$app/state';
-	import { notebookStore } from '$lib/stores/notebook';
+	import { getNotebook } from '$lib/state/notebook.svelte';
 	import { Button } from '$lib/components/ui/button';
 
 	const data = $props();
@@ -10,8 +10,8 @@
 <nav class="flex w-full justify-between p-4">
 	<div class="flex flex-row content-center">
 		<a href="/"><img src="/favicon.svg" alt="logo" class="h-8 w-8" /></a>
-		{#if pathname.includes('notebook') && $notebookStore?.title}
-			<h1 class="pl-4 text-3xl" id="notebook-title">{$notebookStore.title}</h1>
+		{#if pathname.includes('notebook')}
+			<h1 class="pl-4 text-3xl" id="notebook-title">{getNotebook().title}</h1>
 		{:else}
 			<h1 class="pl-4 text-3xl" id="app-title">knotebooklm</h1>
 		{/if}
