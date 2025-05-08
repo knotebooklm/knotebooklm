@@ -1,14 +1,31 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { Button } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Textarea } from '$lib/components/ui/textarea';
+	import { addDocuments } from '$lib/state/notebook.svelte';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import type { DocumentRecord } from '$lib/types';
 
-	let formData = $state({
-		text: ''
-	});
+	let blankFormData = { text: '' };
+
+	let formData = $state(blankFormData);
+
+	let { isOpen, toggle } = $props();
+
+	const handleSubmit: SubmitFunction<DocumentRecord> = () => {
+		return async ({ result }) => {
+			if (result.type === 'success' && result.data) {
+				addDocuments(result.data);
+				formData = blankFormData;
+				toggle();
+			}
+			// TODO: handle error
+		};
+	};
 </script>
 
-<Dialog.Root
+<Dialog.Root bind:open={isOpen} onOpenChange={toggle}
 	><Dialog.Trigger class="w-full">
 		{#snippet child({ props })}<Button {...props} variant="outline" class="w-3/4 rounded-xl"
 				>+ Source</Button
@@ -18,7 +35,7 @@
 		><Dialog.Header
 			><Dialog.Title>Add a Text</Dialog.Title><Dialog.Description
 				><p class="m-5">Paste your copied text below to upload as a source in KnotebookLM</p>
-				<form method="POST" action="?/text">
+				<form method="POST" action="?/text" use:enhance={handleSubmit}>
 					<Textarea
 						name="text"
 						placeholder="Paste text here*"
