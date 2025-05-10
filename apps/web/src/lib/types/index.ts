@@ -1,4 +1,5 @@
 export * from './database';
+export * from './rag';
 
 export type Document = {
 	id: string;
