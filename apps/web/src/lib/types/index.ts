@@ -7,6 +7,7 @@ export type Document = {
 	summary: string;
 	text: string;
 	title: string;
+	topics: string[];
 	user: string;
 };
 

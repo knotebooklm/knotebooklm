@@ -8,6 +8,7 @@ export function makeDocument(record?: DocumentRecord): Document {
 			summary: '',
 			text: '',
 			title: '',
+			topics: [],
 			user: ''
 		};
 	}
@@ -17,6 +18,7 @@ export function makeDocument(record?: DocumentRecord): Document {
 		summary: record.summary,
 		text: record.text,
 		title: record.title,
+		topics: record.topics,
 		user: record.user
 	};
 }

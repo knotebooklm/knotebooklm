@@ -36,7 +36,7 @@ export const actions = {
 		const documentId = generatePocketBaseId();
 		const notebookId = params.notebookId;
 
-		const { summary, title } = await ragAddDocument({
+		const { summary, title, topics } = await ragAddDocument({
 			documentId,
 			notebookId,
 			userId,
@@ -50,7 +50,8 @@ export const actions = {
 			document: new File([text], `doc_${userId}.txt`),
 			text,
 			summary,
-			title: title || 'Pasted Text'
+			title: title || 'Pasted Text',
+			topics: topics || []
 		});
 
 		return makeDocument(response);
