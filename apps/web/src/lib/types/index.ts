@@ -1,4 +1,5 @@
 export * from './database';
+export * from './rag';
 
 export type Document = {
 	id: string;
@@ -6,6 +7,7 @@ export type Document = {
 	summary: string;
 	text: string;
 	title: string;
+	topics: string[];
 	user: string;
 };
 

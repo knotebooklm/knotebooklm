@@ -1,5 +1,8 @@
+import { error } from '@sveltejs/kit';
 import type { DocumentRecord, NotebookRecord } from '$lib/types';
 import { makeDocument, makeNotebook } from '$lib/generators';
+import { ragAddDocument } from '$lib/rag-utils';
+import { generatePocketBaseId } from '$lib/utilities';
 
 export async function load({ locals, params }) {
 	const notebook: NotebookRecord = await locals.pb
@@ -18,39 +21,40 @@ export async function load({ locals, params }) {
 export const actions = {
 	text: async ({ request, locals, params }) => {
 		const data = await request.formData();
-		const text = data.get('text');
+		const text = String(data.get('text'));
 
-		let response: DocumentRecord;
-
-		if (text && locals.user) {
-			response = await locals.pb.collection('documents').create({
-				user: locals.user.id,
-				notebook: params.notebookId,
-				document: new File([text], `doc_${locals.user.id}.txt`),
-				text,
-				summary: text.slice(0, 100),
-				title: 'Pasted Text'
-			});
-
-			if (response) {
-				await fetch('http://localhost:5000/new', {
-					method: 'POST',
-					headers: {
-						'content-type': 'application/json'
-					},
-					body: JSON.stringify({
-						doc_id: response.id,
-						notebook_id: params.notebookId,
-						user_id: locals.user.id,
-						text
-					})
-				});
-
-				return makeDocument(response);
-			}
-
-			return {};
+		if (!text) {
+			error(400, { message: 'No text received.' });
 		}
+
+		const userId = locals.user?.id;
+
+		if (!userId) {
+			error(401, { message: 'Unauthorized' });
+		}
+
+		const documentId = generatePocketBaseId();
+		const notebookId = params.notebookId;
+
+		const { summary, title, topics } = await ragAddDocument({
+			documentId,
+			notebookId,
+			userId,
+			text
+		});
+
+		const response: DocumentRecord = await locals.pb.collection('documents').create({
+			id: documentId,
+			user: userId,
+			notebook: notebookId,
+			document: new File([text], `doc_${userId}.txt`),
+			text,
+			summary,
+			title: title || 'Pasted Text',
+			topics: topics || []
+		});
+
+		return makeDocument(response);
 	},
 	'change-name': async ({ request, locals }) => {
 		const form = await request.formData();

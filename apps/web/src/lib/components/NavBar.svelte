@@ -18,7 +18,7 @@
 	</div>
 	{#if data.user}
 		<div class="flex items-center">
-			<p class="p-3 leading-7 [&:not(:first-child)]:mt-6">{data.user.email.split('@')[0]}</p>
+			<p class="p-3 leading-7 [&:not(:first-child)]:mt-6">{data.user.email?.split('@')[0]}</p>
 			<Button href="/logout" variant="outline" class="">Logout</Button>
 		</div>
 	{/if}

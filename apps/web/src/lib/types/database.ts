@@ -8,6 +8,7 @@ export type DocumentRecord = {
 	summary: string;
 	text: string;
 	title: string;
+	topics: string[];
 	updated: string;
 	user: string;
 };
