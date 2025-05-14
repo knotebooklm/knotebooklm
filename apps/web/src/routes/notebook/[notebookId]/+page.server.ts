@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { DocumentRecord, NotebookRecord } from '$lib/types';
 import { makeDocument, makeNotebook } from '$lib/generators';
-import { ragAddDocument } from '$lib/rag-utils';
+import { ragAddDocument, ragChat } from '$lib/rag-utils';
 import { generatePocketBaseId } from '$lib/utilities';
 
 export async function load({ locals, params }) {
@@ -78,5 +78,24 @@ export const actions = {
 		}
 		// TODO: add error handling
 		await locals.pb.collection('documents').delete(id);
+	},
+	chat: async ({ locals, params, request }) => {
+		const userId = locals.user?.id;
+
+		if (!userId) {
+			error(401, { message: 'Unauthorized' });
+		}
+
+		const form = await request.formData();
+		const query = form.get('query') as string;
+
+		const { answer } = await ragChat({
+			query,
+			notebookId: params.notebookId,
+			documentIds: [],
+			userId
+		});
+
+		return { answer };
 	}
 };
