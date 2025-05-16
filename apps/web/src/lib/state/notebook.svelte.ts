@@ -1,5 +1,5 @@
-import type { Document, DocumentRecord, Notebook } from '$lib/types';
-import { makeDocument, makeNotebook } from '$lib/generators';
+import type { Document, Notebook } from '$lib/types';
+import { makeNotebook } from '$lib/generators';
 
 let notebook = $state<Notebook>();
 let documents = $state<Document[]>([]);
@@ -23,11 +23,11 @@ export function setNotebook(notebookData: Notebook) {
 	selected.clear();
 }
 
-export function addDocuments(document: DocumentRecord | DocumentRecord[]) {
+export function addDocuments(document: Document | Document[]) {
 	if (Array.isArray(document)) {
-		documents.push(...document.map((record) => makeDocument(record)));
+		documents.push(...document.map((record) => record));
 	} else {
-		documents.push(makeDocument(document));
+		documents.push(document);
 	}
 }
 
