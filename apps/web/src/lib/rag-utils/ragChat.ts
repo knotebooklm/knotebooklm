@@ -5,11 +5,13 @@ const ROUTE = '/query';
 
 export async function ragChat({
 	documentIds,
+	history,
 	notebookId,
 	userId,
 	query
 }: {
 	documentIds: string[];
+	history: { role: string; message: string }[];
 	notebookId: string;
 	userId: string;
 	query: string;
@@ -17,6 +19,7 @@ export async function ragChat({
 	const url = `${RAG_URL}:${RAG_CHAT_PORT}${ROUTE}`;
 	const body = {
 		doc_ids: documentIds,
+		history,
 		notebook_id: notebookId,
 		user_id: userId,
 		query

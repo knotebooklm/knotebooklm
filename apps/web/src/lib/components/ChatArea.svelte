@@ -4,14 +4,16 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import { Textarea } from '$lib/components/ui/textarea';
-	import { selected } from '$lib/state/notebook.svelte';
+	import { getDocuments, getNotebook, selected } from '$lib/state/notebook.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { SendHorizontal } from 'lucide-svelte';
 
 	let query = $state<string>('');
 	let chatThread = $state<{ role: 'user' | 'bot'; message: string }[]>([]);
 
-	const handleSubmit: SubmitFunction<{ answer: string }> = () => {
+	const handleSubmit: SubmitFunction<{ answer: string }> = ({ formData }) => {
+		formData.set('history', JSON.stringify(chatThread));
+		formData.set('documentIds', JSON.stringify(Array.from(selected)));
 		chatThread.push({ role: 'user', message: query });
 		query = '';
 
