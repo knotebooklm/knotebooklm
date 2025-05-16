@@ -6,7 +6,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { getDocuments, getNotebook, selected } from '$lib/state/notebook.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import { SendHorizontal } from 'lucide-svelte';
+	import { Send } from 'lucide-svelte';
 
 	let query = $state<string>('');
 	let chatThread = $state<{ role: 'user' | 'bot'; message: string }[]>([]);
@@ -32,12 +32,12 @@
 		<Card.Header class="flex-grow-0">
 			<Card.Title>Chat</Card.Title>
 		</Card.Header>
-		<Card.Content class="flex flex-[10_1_80%] flex-col place-content-between">
+		<Card.Content class="flex flex-[10_1_100%] flex-col place-content-between">
 			<div>
 				<h1 class="mb-2 text-4xl font-extrabold">{getNotebook().title}</h1>
 				<p class="mb-5 text-sm text-gray-500">
-					{selected.size}
-					{selected.size === 1 ? 'document' : 'documents'} selected
+					{getDocuments().length}
+					{getDocuments().length === 1 ? 'document' : 'documents'}
 				</p>
 				<p>{getDocuments().find((doc) => selected.has(doc.id))?.summary}</p>
 				<div class="mt-5 flex place-content-between">
@@ -46,7 +46,7 @@
 					<Button variant="outline" class="w-1/4 rounded-xl">Briefing doc</Button>
 				</div>
 			</div>
-			<Chat.List class="flex-grow">
+			<Chat.List class="max-h-[450px]">
 				{#each chatThread as { role, message }}
 					<Chat.Bubble variant={role === 'user' ? 'sent' : 'received'}>
 						<Chat.BubbleMessage>
@@ -69,8 +69,14 @@
 							{selected.size}
 							{selected.size === 1 ? 'document' : 'documents'}
 						</p>
-						<Button type="submit" variant="ghost" size="icon"
-							><SendHorizontal size={'1rem'} /></Button
+						<Button
+							type="submit"
+							variant="default"
+							size="icon"
+							class="mr-2 shrink-0 rounded-full"
+							disabled={query.trim() === ''}
+						>
+							<Send /></Button
 						>
 					</div>
 				</form>
