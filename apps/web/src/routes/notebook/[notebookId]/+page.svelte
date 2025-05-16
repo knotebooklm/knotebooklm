@@ -8,7 +8,7 @@
 	addDocuments(data.documents);
 </script>
 
-<div class="flex h-screen flex-col">
+<div class="flex flex-col">
 	<!-- Main Content -->
 	<div class="flex flex-1">
 		<!-- Sources -->

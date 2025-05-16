@@ -6,5 +6,9 @@
 	let user = $derived(data.user);
 </script>
 
-<NavBar {user} />
-{@render children()}
+<div class="flex h-screen flex-col">
+	<NavBar {user} />
+	<div>
+		{@render children()}
+	</div>
+</div>

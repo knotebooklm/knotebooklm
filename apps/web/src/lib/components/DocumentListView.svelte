@@ -32,7 +32,7 @@
 	<RenameDocumentModal isOpen={isRenameDocumentModalOpen} toggle={toggleRenameModal} {docId} />
 	<DeleteDocumentModal isOpen={isDeleteDocumentModalOpen} toggle={toggleDeleteModal} {docId} />
 	<ShowDocumentModal isOpen={isDocumentModalOpen} toggle={toggleDocumentModal} {docId} />
-	<Card.Root class="h-full">
+	<Card.Root class="h-full overflow-auto">
 		<Card.Header>
 			<Card.Title>Sources</Card.Title>
 		</Card.Header>
