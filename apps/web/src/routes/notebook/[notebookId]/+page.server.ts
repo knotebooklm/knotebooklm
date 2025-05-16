@@ -1,8 +1,8 @@
-import { error } from '@sveltejs/kit';
-import type { DocumentRecord, NotebookRecord } from '$lib/types';
 import { makeDocument, makeNotebook } from '$lib/generators';
 import { ragAddDocument, ragChat } from '$lib/rag-utils';
+import type { DocumentRecord, NotebookRecord } from '$lib/types';
 import { generatePocketBaseId } from '$lib/utilities';
+import { error } from '@sveltejs/kit';
 
 export async function load({ locals, params }) {
 	const notebook: NotebookRecord = await locals.pb
@@ -88,11 +88,14 @@ export const actions = {
 
 		const form = await request.formData();
 		const query = form.get('query') as string;
+		const history = JSON.parse((form.get('history') as string) || '[]');
+		const documentIds = JSON.parse((form.get('documentIds') as string) || '[]');
 
 		const { answer } = await ragChat({
 			query,
+			history,
 			notebookId: params.notebookId,
-			documentIds: [],
+			documentIds,
 			userId
 		});
 

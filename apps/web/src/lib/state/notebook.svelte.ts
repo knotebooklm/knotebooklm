@@ -1,9 +1,10 @@
+import { SvelteSet } from 'svelte/reactivity';
 import type { Document, Notebook } from '$lib/types';
 import { makeNotebook } from '$lib/generators';
 
 let notebook = $state<Notebook>();
 let documents = $state<Document[]>([]);
-export const selected = $state<Set<string>>(new Set());
+export const selected = $state<SvelteSet<string>>(new SvelteSet());
 
 export function getNotebook() {
 	return notebook || makeNotebook();
