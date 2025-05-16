@@ -26,17 +26,25 @@
 </script>
 
 <section class="flex-[2_1_0%] p-2">
-	<Card.Root class="h-full">
-		<Card.Header>
+	<Card.Root class="flex h-full flex-col overflow-auto">
+		<Card.Header class="flex-grow-0">
 			<Card.Title>Chat</Card.Title>
 		</Card.Header>
-		<Card.Content>
-			<div class="flex justify-around">
-				<Button variant="outline" class="w-1/4 rounded-xl">Add note</Button>
-				<Button variant="outline" class="w-1/4 rounded-xl">Audio overview</Button>
-				<Button variant="outline" class="w-1/4 rounded-xl">Briefing doc</Button>
+		<Card.Content class="flex flex-[10_1_80%] flex-col place-content-between">
+			<div>
+				<h1 class="mb-2 text-4xl font-extrabold">{getNotebook().title}</h1>
+				<p class="mb-5 text-sm text-gray-500">
+					{selected.size}
+					{selected.size === 1 ? 'document' : 'documents'} selected
+				</p>
+				<p>{getDocuments().find((doc) => selected.has(doc.id))?.summary}</p>
+				<div class="mt-5 flex place-content-between">
+					<Button variant="outline" class="w-1/4 rounded-xl">Add note</Button>
+					<Button variant="outline" class="w-1/4 rounded-xl">Audio overview</Button>
+					<Button variant="outline" class="w-1/4 rounded-xl">Briefing doc</Button>
+				</div>
 			</div>
-			<Chat.List>
+			<Chat.List class="flex-grow">
 				{#each chatThread as { role, message }}
 					<Chat.Bubble variant={role === 'user' ? 'sent' : 'received'}>
 						<Chat.BubbleMessage>
@@ -45,7 +53,7 @@
 					</Chat.Bubble>
 				{/each}
 			</Chat.List>
-			<div class="grid w-full gap-2 rounded-lg border border-gray-300">
+			<div class="w-full gap-2 rounded-lg border border-gray-300">
 				<form method="POST" action="?/chat" use:enhance={handleSubmit}>
 					<div class="flex flex-row place-items-center gap-2">
 						<Textarea
@@ -66,6 +74,5 @@
 				</form>
 			</div>
 		</Card.Content>
-		<Card.Footer class="flex justify-around"></Card.Footer>
 	</Card.Root>
 </section>

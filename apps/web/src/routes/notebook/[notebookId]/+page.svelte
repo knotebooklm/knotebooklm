@@ -11,9 +11,9 @@
 	});
 </script>
 
-<div class="flex flex-col">
+<div class="flex h-full flex-col">
 	<!-- Main Content -->
-	<div class="flex flex-1">
+	<div class="flex h-full flex-1">
 		<!-- Sources -->
 		<SourcesArea />
 

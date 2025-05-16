@@ -28,7 +28,7 @@
 	}
 </script>
 
-<section class="flex-1 p-2">
+<section class="h-full flex-1 p-2">
 	<RenameDocumentModal isOpen={isRenameDocumentModalOpen} toggle={toggleRenameModal} {docId} />
 	<DeleteDocumentModal isOpen={isDeleteDocumentModalOpen} toggle={toggleDeleteModal} {docId} />
 	<ShowDocumentModal isOpen={isDocumentModalOpen} toggle={toggleDocumentModal} {docId} />
