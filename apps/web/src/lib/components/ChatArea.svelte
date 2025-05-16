@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import * as Chat from '$lib/components/ui-extras/ui/chat';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import { Textarea } from '$lib/components/ui/textarea';
-	import * as Chat from '$lib/components/ui-extras/ui/chat';
+	import { selected } from '$lib/state/notebook.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import { SendHorizontal } from 'lucide-svelte';
 
 	let query = $state<string>('');
 	let chatThread = $state<{ role: 'user' | 'bot'; message: string }[]>([]);
@@ -43,16 +45,24 @@
 					</Chat.Bubble>
 				{/each}
 			</Chat.List>
-			<div class="grid w-full gap-2 pt-4">
+			<div class="grid w-full gap-2 rounded-lg border border-gray-300">
 				<form method="POST" action="?/chat" use:enhance={handleSubmit}>
-					<Textarea
-						name="query"
-						placeholder="Ask a question..."
-						class="h-40"
-						bind:value={query}
-						rows={5}
-					/>
-					<Button type="submit" class="mt-3 w-full">Submit</Button>
+					<div class="flex flex-row place-items-center gap-2">
+						<Textarea
+							name="query"
+							placeholder="Ask a question..."
+							class="resize-none border-0 shadow-none"
+							bind:value={query}
+							rows={3}
+						/>
+						<p class="min-w-fit align-middle text-xs">
+							{selected.size}
+							{selected.size === 1 ? 'document' : 'documents'}
+						</p>
+						<Button type="submit" variant="ghost" size="icon"
+							><SendHorizontal size={'1rem'} /></Button
+						>
+					</div>
 				</form>
 			</div>
 		</Card.Content>
