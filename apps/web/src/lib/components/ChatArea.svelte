@@ -27,33 +27,35 @@
 	};
 </script>
 
-<section class="flex-[2_1_0%] p-2">
-	<Card.Root class="flex h-full flex-col overflow-auto">
+<section class="flex-[2_1_0%] overflow-y-hidden p-2">
+	<Card.Root class="flex h-full flex-col overflow-y-hidden">
 		<Card.Header class="flex-grow-0">
 			<Card.Title>Chat</Card.Title>
 		</Card.Header>
 		<Card.Content class="flex flex-[10_1_100%] flex-col place-content-between">
-			<div>
-				<h1 class="mb-2 text-4xl font-extrabold">{getNotebook().title}</h1>
-				<p class="mb-5 text-sm text-gray-500">
-					{getDocuments().length}
-					{getDocuments().length === 1 ? 'document' : 'documents'}
-				</p>
-				<p>{getDocuments().find((doc) => selected.has(doc.id))?.summary}</p>
-				<div class="mt-5 flex place-content-between">
-					<Button variant="outline" class="w-1/4 rounded-xl">Add note</Button>
-					<Button variant="outline" class="w-1/4 rounded-xl">Audio overview</Button>
-					<Button variant="outline" class="w-1/4 rounded-xl">Briefing doc</Button>
+			<Chat.List class="max-h-[400px]">
+				<div>
+					<div>
+						<h1 class="mb-2 text-4xl font-extrabold">{getNotebook().title}</h1>
+						<p class="mb-5 text-sm text-gray-500">
+							{getDocuments().length}
+							{getDocuments().length === 1 ? 'document' : 'documents'}
+						</p>
+						<p>{getDocuments().find((doc) => selected.has(doc.id))?.summary}</p>
+						<div class="mt-5 flex place-content-between">
+							<Button variant="outline" class="w-1/4 rounded-xl">Add note</Button>
+							<Button variant="outline" class="w-1/4 rounded-xl">Audio overview</Button>
+							<Button variant="outline" class="w-1/4 rounded-xl">Briefing doc</Button>
+						</div>
+					</div>
+					{#each chatThread as { role, message }}
+						<Chat.Bubble variant={role === 'user' ? 'sent' : 'received'}>
+							<Chat.BubbleMessage>
+								{message}
+							</Chat.BubbleMessage>
+						</Chat.Bubble>
+					{/each}
 				</div>
-			</div>
-			<Chat.List class="max-h-[450px]">
-				{#each chatThread as { role, message }}
-					<Chat.Bubble variant={role === 'user' ? 'sent' : 'received'}>
-						<Chat.BubbleMessage>
-							{message}
-						</Chat.BubbleMessage>
-					</Chat.Bubble>
-				{/each}
 			</Chat.List>
 			<div class="w-full gap-2 rounded-lg border border-gray-300">
 				<form method="POST" action="?/chat" use:enhance={handleSubmit}>
