@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Input } from '$lib/components/ui/input';
-	import { updateDocument, selected } from '$lib/state/notebook.svelte';
+	import { updateDocument } from '$lib/state/notebook.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 
 	let { docId, isOpen, toggle } = $props();
@@ -15,7 +15,6 @@
 				updatedTitle = '';
 				toggle();
 				updateDocument(docId, { title: result.data.title });
-				console.log('selected: ', selected);
 			} else if (result.type === 'error') {
 				// TODO: Handle error
 				console.error('Form submission failed:', result.error);

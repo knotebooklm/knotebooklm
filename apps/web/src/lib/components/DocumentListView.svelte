@@ -28,7 +28,7 @@
 	}
 </script>
 
-<section class="flex-1 p-2">
+<section class="h-full flex-1 p-2">
 	<RenameDocumentModal isOpen={isRenameDocumentModalOpen} toggle={toggleRenameModal} {docId} />
 	<DeleteDocumentModal isOpen={isDeleteDocumentModalOpen} toggle={toggleDeleteModal} {docId} />
 	<ShowDocumentModal isOpen={isDocumentModalOpen} toggle={toggleDocumentModal} {docId} />
@@ -45,8 +45,25 @@
 			</div>
 			<Table.Root>
 				<Table.Body>
+					<Table.Row class="border-none">
+						<Table.Cell
+							><Checkbox
+								id="select-all"
+								checked={selected.size === getDocuments().length}
+								onCheckedChange={(v) => {
+									if (v) {
+										getDocuments().forEach((doc) => {
+											selected.add(doc.id);
+										});
+									} else {
+										selected.clear();
+									}
+								}}
+							/></Table.Cell
+						><Table.Cell colspan={5}>select all documents</Table.Cell>
+					</Table.Row>
 					{#each getDocuments() as document}
-						<Table.Row
+						<Table.Row class="border-none"
 							><Table.Cell
 								><Checkbox
 									id={document.id}
